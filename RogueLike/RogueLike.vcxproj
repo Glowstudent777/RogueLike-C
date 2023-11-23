@@ -130,9 +130,11 @@
   <ItemGroup>
     <ClCompile Include="draw.c" />
     <ClCompile Include="engine.c" />
+    <ClCompile Include="fov.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="player.c" />
+    <ClCompile Include="room.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rogue.h" />

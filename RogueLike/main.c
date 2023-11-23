@@ -6,18 +6,29 @@ const int MAP_WIDTH = 100;
 Entity* player;
 Tile** map;
 
-int main()
+int main(void)
 {
-    Position start_pos;
-    cursesSetup();
+	Position start_pos;
+	bool compatibleTerminal;
 
-    map = createMapTiles();
-    
-    start_pos = setupMap();
-    player = createPlayer(start_pos);
+	compatibleTerminal = cursesSetup();
 
-    gameLoop();
+	if (compatibleTerminal)
+	{
+		srand(time(NULL));
 
-    closeGame();
-    return 0;
+		map = createMapTiles();
+		start_pos = setupMap();
+		player = createPlayer(start_pos);
+
+		gameLoop();
+
+		closeGame();
+	}
+	else
+	{
+		endwin();
+	}
+
+	return 0;
 }

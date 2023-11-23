@@ -10,7 +10,11 @@ Tile** createMapTiles(void)
 		for (int x = 0; x < MAP_WIDTH; x++)
 		{
 			tiles[y][x].ch = '#';
+			tiles[y][x].color = COLOR_PAIR(VISIBLE_COLOR);
 			tiles[y][x].walkable = 0;
+			tiles[y][x].transparent = 0;
+			tiles[y][x].visible = 0;
+			tiles[y][x].seen = 0;
 		}
 	}
 
@@ -19,19 +23,35 @@ Tile** createMapTiles(void)
 
 Position setupMap(void)
 {
-	Position start_pos = { 10, 50 };
+	int y, x, height, width, n_rooms;
+	n_rooms = (rand() % 11) + 5;
+	Room* rooms = calloc(n_rooms, sizeof(Room));
+	Position start_pos;
 
-	for (int y = 5; y < 15; y++)
+	for (int i = 0; i < n_rooms; i++)
 	{
-		for (int x = 40; x < 60; x++)
+		y = (rand() % (MAP_HEIGHT - 10)) + 1;
+		x = (rand() % (MAP_WIDTH - 20)) + 1;
+		height = (rand() % 7) + 3;
+		width = (rand() % 15) + 5;
+		rooms[i] = createRoom(y, x, height, width);
+		addRoomToMap(rooms[i]);
+
+		if (i > 0)
 		{
-			map[y][x].ch = '.';
-			map[y][x].walkable = 1;
+			connectRoomCenters(rooms[i - 1].center, rooms[i].center);
 		}
 	}
 
+	start_pos.y = rooms[0].center.y;
+	start_pos.x = rooms[0].center.x;
+
+	free(rooms);
+
 	return start_pos;
 }
+
+
 
 void freeMap(void)
 {
